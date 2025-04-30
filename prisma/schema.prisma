@@ -26,7 +26,7 @@ model Posts {
   id             String  @id @default(uuid())
   title          String
   content        String
-  personName     String
+  // personName     String
 
   personId  String      // foreign key
   owner          Person      @relation(fields: [personId], references: [id])
