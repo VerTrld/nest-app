@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { CreatePostsDto } from './dto/createPosts.dto';
+import { find } from 'rxjs';
 
 @Injectable()
 export class PostsService {
@@ -27,7 +28,26 @@ export class PostsService {
     });
   }
 
+  async findOne(id: string){
+
+    console.log({id:id})
+    const findOne = await this.prismaClient.posts.findUnique({
+      where: {id}
+    })
+
+    return findOne
+
+  }
+
   async findAll() {
     return this.prismaClient.posts.findMany();
+  }
+
+  async remove(id: string) {
+  const deletePerson =  await  this.prismaClient.posts.delete({
+      where: { id }
+    });
+
+    return deletePerson
   }
 }

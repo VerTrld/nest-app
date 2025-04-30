@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostsDto } from './dto/createPosts.dto';
 
@@ -11,13 +11,25 @@ export class PostsController {
     return this.postsService.create(createPostsDto);
   }
 
-  @Get('by-owner/:ownerPersonId')
+  @Get('owner/:ownerPersonId')
   findByOwner(@Param('ownerPersonId') personId: string) {
     return this.postsService.findByOwner(personId);
+  }
+
+  @Get('one/:postId') 
+  findOne(@Param('postId') id: string) {
+    return this.postsService.findOne(id)
+
   }
 
   @Get('all')
   findAll() {
     return this.postsService.findAll();
   }
+  
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+      return this.postsService.remove(id);
+    }
 }
