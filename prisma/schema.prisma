@@ -20,6 +20,7 @@ model Person {
   hash   String
 
   Posts  Posts[]  // ✅ One-to-Many relation (1 person -> many posts)
+  Comments Comments[]
 }
 
 model Posts {
@@ -39,5 +40,7 @@ model Comments {
   id        String   @id @default(uuid())
   content   String
   postId String
+  personId  String
   post     Posts @relation(fields: [postId], references: [id])
+  owner     Person   @relation(fields: [personId], references: [id])
 }

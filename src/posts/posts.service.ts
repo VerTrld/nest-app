@@ -28,26 +28,35 @@ export class PostsService {
     });
   }
 
-  async findOne(id: string){
-
-    console.log({id:id})
+  async findOne(id: string) {
+    console.log({ id: id });
     const findOne = await this.prismaClient.posts.findUnique({
-      where: {id}
-    })
+      where: { id },
+    });
 
-    return findOne
-
+    return findOne;
   }
 
   async findAll() {
-    return this.prismaClient.posts.findMany();
+    const posts = await this.prismaClient.posts.findMany({
+      include: {
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+    return posts;
   }
 
   async remove(id: string) {
-  const deletePerson =  await  this.prismaClient.posts.delete({
-      where: { id }
+    const deletePerson = await this.prismaClient.posts.delete({
+      where: { id },
     });
 
-    return deletePerson
+    return deletePerson;
   }
 }

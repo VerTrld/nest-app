@@ -14,9 +14,34 @@ export class CommentsService {
     return createComment;
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAll() {
+    const data = await this.prismaClient.comments.findMany({
+      include: {
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+    return data;
   }
+  // async findAll() {
+  //   const posts = await this.prismaClient.posts.findMany({
+  //     include: {
+  //       owner: {
+  //         select: {
+  //           id: true,
+  //           name: true,
+  //           email: true,
+  //         },
+  //       },
+  //     },
+  //   });
+  //   return posts;
+  // }
 
   findOne(id: number) {
     return `This action returns a #${id} comment`;

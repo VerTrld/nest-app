@@ -6,4 +6,7 @@ export class Comments {
 
   @ApiProperty()
   postId: string;
+
+  @ApiProperty()
+  personId: string;
 }
