@@ -25,9 +25,9 @@ export class CommentsController {
     return this.commentsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
+  @Get(':postId')
+  findByPostId(@Param('postId') postId: string) {
+    return this.commentsService.findByPostId(postId);
   }
 
   @Patch(':id')

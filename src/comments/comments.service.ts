@@ -43,8 +43,23 @@ export class CommentsService {
   //   return posts;
   // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findByPostId(postId: string) {
+    const commentPost = await this.prismaClient.comments.findMany({
+      where: {
+        postId,
+      },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            email: true,
+            id: true,
+          },
+        },
+      },
+    });
+
+    return commentPost;
   }
 
   update(id: number, updateCommentDto: UpdateCommentDto) {

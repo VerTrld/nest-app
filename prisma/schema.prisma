@@ -21,6 +21,11 @@ model Person {
 
   Posts  Posts[]  // ✅ One-to-Many relation (1 person -> many posts)
   Comments Comments[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  
 }
 
 model Posts {
@@ -33,6 +38,9 @@ model Posts {
   owner          Person      @relation(fields: [personId], references: [id])
   comments       Comments[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
 
 
@@ -43,4 +51,7 @@ model Comments {
   personId  String
   post     Posts @relation(fields: [postId], references: [id])
   owner     Person   @relation(fields: [personId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
