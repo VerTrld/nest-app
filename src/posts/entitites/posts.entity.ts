@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PostType } from '@prisma/client';
 
 export class Posts {
-
   @ApiProperty()
-  id:string;
-  
+  id: string;
+
   @ApiProperty()
   title: string;
 
@@ -13,4 +13,7 @@ export class Posts {
 
   @ApiProperty()
   personId: string;
+
+  @ApiProperty({ enum: PostType })
+  type?: PostType;
 }

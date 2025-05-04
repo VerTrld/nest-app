@@ -16,20 +16,18 @@ export class PostsController {
     return this.postsService.findByOwner(personId);
   }
 
-  @Get('one/:postId') 
+  @Get('one/:postId')
   findOne(@Param('postId') id: string) {
-    return this.postsService.findOne(id)
-
+    return this.postsService.findOne(id);
   }
 
   @Get('all')
   findAll() {
     return this.postsService.findAll();
   }
-  
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-      return this.postsService.remove(id);
-    }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.postsService.remove(id);
+  }
 }

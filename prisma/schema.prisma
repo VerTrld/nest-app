@@ -28,10 +28,16 @@ model Person {
   
 }
 
+enum PostType {
+  public
+  private
+}
+
 model Posts {
   id             String  @id @default(uuid())
   title          String
   content        String
+  type           PostType?
   // personName     String
 
   personId  String      // foreign key

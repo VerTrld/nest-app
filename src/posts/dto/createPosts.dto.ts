@@ -6,6 +6,5 @@ export class CreatePostsDto extends PickType(Posts, [
   'title',
   'content',
   'personId',
-
-  
+  'type',
 ]) {}

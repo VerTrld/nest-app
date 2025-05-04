@@ -6,3 +6,4 @@ export class CreateCommentDto extends PickType(Comments, [
   'postId',
   'personId',
 ]) {}
+ 

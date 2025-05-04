@@ -25,20 +25,6 @@ export class PostsService {
       where: {
         personId,
       },
-    });
-  }
-
-  async findOne(id: string) {
-    console.log({ id: id });
-    const findOne = await this.prismaClient.posts.findUnique({
-      where: { id },
-    });
-
-    return findOne;
-  }
-
-  async findAll() {
-    const posts = await this.prismaClient.posts.findMany({
       include: {
         owner: {
           select: {
@@ -49,14 +35,57 @@ export class PostsService {
         },
       },
     });
+  }
+
+  async findOne(id: string) {
+    console.log({ id: id });
+    const findOne = await this.prismaClient.posts.findUnique({
+      where: { id },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return findOne;
+  }
+
+  async findAll() {
+    const posts = await this.prismaClient.posts.findMany({
+      include: {
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
     return posts;
   }
 
   async remove(id: string) {
-    const deletePerson = await this.prismaClient.posts.delete({
+    await this.prismaClient.comments.deleteMany({
+      where: {
+        postId: id,
+      },
+    });
+    const deletePost = await this.prismaClient.posts.delete({
       where: { id },
     });
 
-    return deletePerson;
+    return deletePost;
   }
 }
