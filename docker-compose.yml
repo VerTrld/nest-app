@@ -4,5 +4,5 @@ services:
     build:
       context: https://github.com/VerTrld/nest-app.git
     ports:
-      - "3001:3001"
+      - '3001:3001'
     restart: always
