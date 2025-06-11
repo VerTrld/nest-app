@@ -26,6 +26,8 @@ model Person {
   updatedAt DateTime @updatedAt
 
   
+
+  Likes Likes[]
 }
 
 enum PostType {
@@ -47,6 +49,8 @@ model Posts {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
+  Likes Likes[]
 }
 
 
@@ -60,4 +64,20 @@ model Comments {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+
+// Di pa na push sa db
+
+model Likes {
+  id        String   @id @default(uuid())
+  personId  String
+  postId    String
+
+  person    Person   @relation(fields: [personId], references: [id])
+  post      Posts    @relation(fields: [postId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([personId, postId]) // Prevent duplicate likes
 }

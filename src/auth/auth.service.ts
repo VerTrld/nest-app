@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
+import { Person } from 'src/person/entities/person.entity';
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,14 +26,18 @@ export class AuthService {
 
     const passwordMatches = await argon2.verify(user.hash, password);
     if (!passwordMatches) {
-      return 'Invalid Cridentials';
+      return null;
     }
 
     return user;
   }
 
-  async login(person: any) {
-    const payload = { sub: person.id, name: person.name, email: person.email };
+  async login(person: Person) {
+    const payload = {
+      sub: person.id,
+      name: person.name,
+      email: person.email,
+    };
 
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
