@@ -1,31 +1,8 @@
-# version: '3'
-# services:
-#   nestjs-app:
-#     build:
-#       context: https://github.com/VerTrld/nest-app.git
-#     ports:
-#       - '3001:3001'
-#     restart: always
-
 version: '3'
-
 services:
   nestjs-app:
     build:
       context: https://github.com/VerTrld/nest-app.git
-    restart: always
-    networks:
-      - web
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nestjs.rule=Host(`univerapp.site`)"
-      - "traefik.http.routers.nestjs.entrypoints=websecure"
-      - "traefik.http.routers.nestjs.tls.certresolver=myresolver"
-      - "traefik.http.services.nestjs.loadbalancer.server.port=3001"
-    # Optional: Remove this line in production if going full HTTPS
     ports:
-      - "3001:3001"
-
-networks:
-  web:
-    external: true
+      - '3001:3001'
+    restart: always
