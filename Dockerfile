@@ -1,26 +1,35 @@
-# Use official lightweight Node.js base image
-FROM node:18-alpine
+# Use lightweight Node.js base image
+FROM node:18-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy only package files first (for better Docker caching)
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# Install dependencies (includes @prisma/client)
 RUN npm install
 
-# Copy the entire application code (includes prisma/)
+# Copy app source code
 COPY . .
 
-# Generate Prisma client
+# Generate Prisma client (important before build)
 RUN npx prisma generate
 
-# Build the NestJS app (compiles TypeScript to dist/)
+# Build the NestJS app (output to dist/)
 RUN npm run build
 
-# Expose port NestJS will run on
+# Production image
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy production dependencies only
+COPY package*.json ./
+RUN npm install --only=production
+
+# Copy built app and prisma client
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
+
 EXPOSE 3001
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main.js"]

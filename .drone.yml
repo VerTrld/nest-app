@@ -1,0 +1,17 @@
+kind: pipeline
+type: docker
+name: backend
+
+steps:
+  - name: build
+    image: plugins/docker
+    settings:
+      tags: ${DRONE_TAG}
+      dockerfile: Dockerfile
+      repo: 128.199.250.178:5000/forum-backend-app
+      registry: 128.199.250.178:5000
+      insecure: true
+
+trigger:
+  branch:
+    - master
