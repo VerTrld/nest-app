@@ -1,23 +1,27 @@
-# Use lightweight Node.js base image
-FROM node:18-alpine AS builder
+# Use lightweight Node.js 20 base image for build
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package files and install all dependencies
 COPY package*.json ./
 RUN npm install
 
 # Copy app source code
 COPY . .
 
-# Generate Prisma client (important before build)
+# Generate Prisma client
 RUN npx prisma generate
 
-# Build the NestJS app (output to dist/)
+# Push Prisma schema to database (sync schema)
+# Note: For this to work during build, your database must be accessible from build context!
+RUN npx prisma db push
+
+# Build NestJS app (output to dist/)
 RUN npm run build
 
-# Production image
-FROM node:18-alpine
+# Production image (Node 20 Alpine)
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -25,7 +29,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --only=production
 
-# Copy built app and prisma client
+# Copy built app and prisma files
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
