@@ -8,8 +8,8 @@ steps:
     settings:
       tags: ${DRONE_TAG}
       dockerfile: Dockerfile
-      repo: 172.22.154.209:5000/forum-backend-app
-      registry: 172.22.154.209:5000
+      repo: 192.168.0.212/5000/forum-ws-app
+      registry: 192.168.0.212:5000
       insecure: true
 
 trigger:
